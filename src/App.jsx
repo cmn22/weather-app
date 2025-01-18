@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { fetchWeather } from "./api/fetchWeather";
 
 const App = () => {
@@ -6,6 +6,12 @@ const App = () => {
   const [cityName, setCityName] = useState("");
   const [error, setError] = useState(null);
   const [isCelsius, setIsCelsius] = useState(true);
+  const [recentSearches, setRecentSearches] = useState([]);
+
+  useEffect(() => {
+    const savedSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
+    setRecentSearches(savedSearches);
+  }, []);
 
   const fetchData = async (e) => {
     if (e.key === "Enter") {
@@ -14,11 +20,30 @@ const App = () => {
         setWeatherData(data);
         setCityName("");
         setError(null);
+
+        // Add to localStorage
+        if (!recentSearches.includes(cityName)) {
+          const updatedSearches = [cityName, ...recentSearches.slice(0, 4)]; // Store last 5 searches
+          setRecentSearches(updatedSearches);
+          localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+        }
       } catch (error) {
         setError(error.message);
       }
     }
   };
+
+  const handleRecentSearch = async (city) => {
+    try {
+      const data = await fetchWeather(city);
+      setWeatherData(data);
+      setError(null);
+    } catch (error) {
+      setError("City not found. Please try again.");
+    } finally {
+    }
+  };
+
   return (
     <div>
       <input
@@ -49,6 +74,24 @@ const App = () => {
             <p>Humidity: {weatherData.current.humidity}</p>
             <p>Pressure: {weatherData.current.pressure_mb}</p>
             <p>Visibility: {weatherData.current.vis_km}</p>
+          </div>
+      )}
+      {/* Recent Searches */}
+      {recentSearches.length > 0 && (
+          <div>
+            <h3>Recent Searches</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {recentSearches.map((city, index) => (
+                  <li key={index}>
+                    <button
+                        onClick={() => handleRecentSearch(city)}
+                        style={{ margin: "5px", padding: "5px", cursor: "pointer" }}
+                    >
+                      {city}
+                    </button>
+                  </li>
+              ))}
+            </ul>
           </div>
       )}
     </div>
