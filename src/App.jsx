@@ -53,8 +53,12 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="App">
+
+      <h1>Weather App</h1>
+
       <input
+        className="input-field"
         type="text"
         placeholder="Enter city name..."
         value={cityName}

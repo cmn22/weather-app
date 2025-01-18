@@ -1,16 +1,27 @@
-.error-message {
-    color: red;
-}
+.App {
+    text-align: center;
+    padding: 20px;
 
-.recent-searches {
-    ul{
-        list-style-type: none;
-        padding: 0;
+    .input-field {
+        padding: 10px;
+        width: 200px;
+        margin-bottom: 10px;
     }
 
-    button {
-        margin: 5px;
-        padding: 5px;
-        cursor: pointer;
+    .error-message {
+        color: red;
+    }
+
+    .recent-searches {
+        ul{
+            list-style-type: none;
+            padding: 0;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
     }
 }
