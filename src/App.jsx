@@ -8,6 +8,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const [isCelsius, setIsCelsius] = useState(true);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
@@ -16,6 +17,7 @@ const App = () => {
 
   const fetchData = async (e) => {
     if (e.key === "Enter") {
+      setLoading(true);
       try {
         const data = await fetchWeather(cityName);
         setWeatherData(data);
@@ -28,13 +30,17 @@ const App = () => {
           setRecentSearches(updatedSearches);
           localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
         }
+
       } catch (error) {
         setError(error.message);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const handleRecentSearch = async (city) => {
+    setLoading(true);
     try {
       const data = await fetchWeather(city);
       setWeatherData(data);
@@ -42,6 +48,7 @@ const App = () => {
     } catch (error) {
       setError("City not found. Please try again.");
     } finally {
+      setLoading(false);
     }
   };
 
@@ -54,9 +61,17 @@ const App = () => {
         onChange={(e) => setCityName(e.target.value)}
         onKeyDown={fetchData}
       />
-      {error && <div style={{ color: "red" }}>{error}</div>}
+
+      {loading && (
+          <p>Loading...</p>
+      )}
+
+      {error && (
+          <div className="error-message">{error}</div>
+      )}
+
       {weatherData && (
-          <div>
+          <div className="weather-details">
             <h2>
               {weatherData.location.name}, {weatherData.location.region},{" "}
               {weatherData.location.country}
@@ -77,11 +92,11 @@ const App = () => {
             <p>Visibility: {weatherData.current.vis_km}</p>
           </div>
       )}
-      {/* Recent Searches */}
+
       {recentSearches.length > 0 && (
           <div className="recent-searches">
             <h3>Recent Searches</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul>
               {recentSearches.map((city, index) => (
                   <li key={index}>
                     <button
@@ -94,6 +109,7 @@ const App = () => {
             </ul>
           </div>
       )}
+
     </div>
   );
 };
