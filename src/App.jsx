@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { fetchWeather } from "./api/fetchWeather";
+import "./styles/App.css"
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -78,14 +79,13 @@ const App = () => {
       )}
       {/* Recent Searches */}
       {recentSearches.length > 0 && (
-          <div>
+          <div className="recent-searches">
             <h3>Recent Searches</h3>
             <ul style={{ listStyle: "none", padding: 0 }}>
               {recentSearches.map((city, index) => (
                   <li key={index}>
                     <button
                         onClick={() => handleRecentSearch(city)}
-                        style={{ margin: "5px", padding: "5px", cursor: "pointer" }}
                     >
                       {city}
                     </button>
