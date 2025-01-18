@@ -5,6 +5,7 @@ const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [cityName, setCityName] = useState("");
   const [error, setError] = useState(null);
+  const [isCelsius, setIsCelsius] = useState(true);
 
   const fetchData = async (e) => {
     if (e.key === "Enter") {
@@ -29,24 +30,26 @@ const App = () => {
       />
       {error && <div style={{ color: "red" }}>{error}</div>}
       {weatherData && (
-        <div>
-          <h2>
-            {weatherData.location.name}, {weatherData.location.region},{" "}
-            {weatherData.location.country}
-          </h2>
-          <p>
-            Temperature: {weatherData.current.temp_c} °C (
-            {weatherData.current.temp_f} °F)
-          </p>
-          <p>Condition: {weatherData.current.condition.text}</p>
-          <img
-            src={weatherData.current.condition.icon}
-            alt={weatherData.current.condition.text}
-          />
-          <p>Humidity: {weatherData.current.humidity}</p>
-          <p>Pressure: {weatherData.current.pressure_mb}</p>
-          <p>Visibility: {weatherData.current.vis_km}</p>
-        </div>
+          <div>
+            <h2>
+              {weatherData.location.name}, {weatherData.location.region},{" "}
+              {weatherData.location.country}
+            </h2>
+            <p>
+              Temperature: {isCelsius ? weatherData.current.temp_c : weatherData.current.temp_f} °{isCelsius ? "C" : "F"}
+            </p>
+            <button onClick={() => setIsCelsius(!isCelsius)}>
+              Switch to {isCelsius ? "Fahrenheit" : "Celsius"}
+            </button>
+            <p>Condition: {weatherData.current.condition.text}</p>
+            <img
+                src={weatherData.current.condition.icon}
+                alt={weatherData.current.condition.text}
+            />
+            <p>Humidity: {weatherData.current.humidity}</p>
+            <p>Pressure: {weatherData.current.pressure_mb}</p>
+            <p>Visibility: {weatherData.current.vis_km}</p>
+          </div>
       )}
     </div>
   );
