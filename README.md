@@ -5,7 +5,8 @@ A clean, responsive weather application that displays current weather conditions
 ---
 
 ### **Preview**
-<img src="[YOUR_SCREENSHOT_URL]" width="600" alt="Weather App Preview">
+<img width="500" alt="Weather App Home" src="https://github.com/user-attachments/assets/94dcb16a-1f01-43d0-8a36-cb4fc5da607b" />
+<img width="500" alt="Weather App City Details" src="https://github.com/user-attachments/assets/61294e8e-06fa-4307-994a-6af8d1c88154" />
 
 ---
 
